@@ -24,3 +24,8 @@ lib/
 # Generated working files
 node_modules/
 *.log
+
+# Stray captures dropped at repo root (move into screenshots/ or assets/ to commit)
+/Screenshot *.png
+/Screen Shot *.png
+/[0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f][0-9a-f]-*.png

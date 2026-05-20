@@ -1,17 +1,25 @@
-# Example DESIGN.md outputs
+# Example `DESIGN.md` outputs
 
 Eight curated samples from the live DesignMD catalog, showing the kind of structured design specification you get for any URL. Each `.md` file is paired with the source-site thumbnail used during extraction.
 
-| Sample | Category | Live page |
-|---|---|---|
-| [`DESIGN-stripe.md`](./DESIGN-stripe.md) | Fintech | [/benchmarks/stripe](https://designmd.adityaraj.info/benchmarks/stripe) |
-| [`DESIGN-mercury.md`](./DESIGN-mercury.md) | Fintech | [/benchmarks/mercury](https://designmd.adityaraj.info/benchmarks/mercury) |
-| [`DESIGN-linear.md`](./DESIGN-linear.md) | Productivity | [/benchmarks/linear](https://designmd.adityaraj.info/benchmarks/linear) |
-| [`DESIGN-notion.md`](./DESIGN-notion.md) | Productivity | [/benchmarks/notion](https://designmd.adityaraj.info/benchmarks/notion) |
-| [`DESIGN-vercel.md`](./DESIGN-vercel.md) | Hosting | [/benchmarks/vercel](https://designmd.adityaraj.info/benchmarks/vercel) |
-| [`DESIGN-anthropic.md`](./DESIGN-anthropic.md) | AI | [/benchmarks/anthropic](https://designmd.adityaraj.info/benchmarks/anthropic) |
-| [`DESIGN-figma.md`](./DESIGN-figma.md) | Design | [/benchmarks/figma](https://designmd.adityaraj.info/benchmarks/figma) |
-| [`DESIGN-airbnb.md`](./DESIGN-airbnb.md) | Consumer | [/benchmarks/airbnb](https://designmd.adityaraj.info/benchmarks/airbnb) |
+| Sample                                       | Category     | Live page                                                  |
+| -------------------------------------------- | ------------ | ---------------------------------------------------------- |
+| [`DESIGN-stripe.md`](./DESIGN-stripe.md)     | Fintech      | [/benchmarks/stripe](https://designmd.cc/benchmarks/stripe)       |
+| [`DESIGN-mercury.md`](./DESIGN-mercury.md)   | Fintech      | [/benchmarks/mercury](https://designmd.cc/benchmarks/mercury)     |
+| [`DESIGN-linear.md`](./DESIGN-linear.md)     | Productivity | [/benchmarks/linear](https://designmd.cc/benchmarks/linear)       |
+| [`DESIGN-notion.md`](./DESIGN-notion.md)     | Productivity | [/benchmarks/notion](https://designmd.cc/benchmarks/notion)       |
+| [`DESIGN-vercel.md`](./DESIGN-vercel.md)     | Hosting      | [/benchmarks/vercel](https://designmd.cc/benchmarks/vercel)       |
+| [`DESIGN-anthropic.md`](./DESIGN-anthropic.md) | AI         | [/benchmarks/anthropic](https://designmd.cc/benchmarks/anthropic) |
+| [`DESIGN-figma.md`](./DESIGN-figma.md)       | Design       | [/benchmarks/figma](https://designmd.cc/benchmarks/figma)         |
+| [`DESIGN-airbnb.md`](./DESIGN-airbnb.md)     | Consumer     | [/benchmarks/airbnb](https://designmd.cc/benchmarks/airbnb)       |
+
+## Generate your own
+
+```bash
+npx @designmdcc/cli <your-url> > DESIGN.md
+```
+
+Same pipeline as the examples in this folder — measured live against the source page, no human editing.
 
 ## What's in a sample
 
@@ -42,4 +50,4 @@ No human editing has been applied to these examples.
 
 ## How to use them
 
-See [`/docs/using-with-ai-tools.md`](../docs/using-with-ai-tools.md) for instructions on integrating these files with Claude, Cursor, Copilot, and other AI coding tools.
+See [`/docs/using-with-ai-tools.md`](../docs/using-with-ai-tools.md) for instructions on integrating these files with Claude Code, Cursor, Copilot, Windsurf, and other AI coding tools.

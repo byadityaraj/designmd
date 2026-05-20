@@ -1,64 +1,164 @@
 <div align="center">
 
+<img src="./assets/logo.png" alt="DesignMD" width="120" />
+
 # DesignMD
 
-### Structured design intelligence for modern websites.
+### Production-grade design context for AI coding workflows.
 
-Turn any production URL into a measured, AI-ready design specification — colors, typography, spacing, breakpoints, and interaction states, captured directly from the live page.
+Extract a real design system from any production URL — colors, typography, spacing, breakpoints, motion, interaction states — and stream it as a portable `DESIGN.md` your coding agent can actually read.
 
-[![Live Demo](https://img.shields.io/badge/demo-designmd.adityaraj.info-D14E2F?style=flat-square)](https://designmd.adityaraj.info)
-[![Benchmarks](https://img.shields.io/badge/benchmarks-56_sites-2A2620?style=flat-square)](https://designmd.adityaraj.info/benchmarks)
-[![Status](https://img.shields.io/badge/status-public_beta-2A2620?style=flat-square)](https://designmd.adityaraj.info)
+[![npm](https://img.shields.io/npm/v/@designmdcc/cli?style=flat-square&color=2A2620&label=%40designmdcc%2Fcli)](https://www.npmjs.com/package/@designmdcc/cli)
+[![Demo](https://img.shields.io/badge/demo-designmd.cc-D14E2F?style=flat-square)](https://designmd.cc)
+[![Benchmarks](https://img.shields.io/badge/benchmarks-56_sites-2A2620?style=flat-square)](https://designmd.cc/benchmarks)
 [![License](https://img.shields.io/badge/license-MIT-2A2620?style=flat-square)](./LICENSE)
 
-[**Live site**](https://designmd.adityaraj.info) · [**Benchmark catalog**](https://designmd.adityaraj.info/benchmarks) · [**Examples**](./examples) · [**Roadmap**](./docs/roadmap.md)
+[**Web**](https://designmd.cc) · [**Benchmarks**](https://designmd.cc/benchmarks) · [**CLI on npm**](https://www.npmjs.com/package/@designmdcc/cli) · [**Examples**](./examples) · [**Roadmap**](./docs/roadmap.md)
 
 </div>
 
 <br />
 
-![DesignMD — paste any URL, get a structured DESIGN.md back in seconds](./screenshots/homepage.jpg)
+---
+
+## Quick start
+
+```bash
+npx @designmdcc/cli stripe.com > DESIGN.md
+```
+
+That's the whole flow. No account, no config, no API key. The command streams a measured `DESIGN.md` spec for `stripe.com` to stdout; redirect it into a file and hand it to your AI coding agent.
+
+For repeat use, install globally:
+
+```bash
+npm install -g @designmdcc/cli
+dmd stripe.com > DESIGN.md
+```
+
+Requires **Node 18+**.
 
 <br />
 
 ---
 
-## Overview
-
-DesignMD measures the real visual system of a production website and formalizes it as a portable `DESIGN.md` specification — every color, font, spacing value, and interaction state pulled from the live page itself, not inferred or guessed.
-
-The result is an **AI-ready design context** that drops cleanly into Claude, Cursor, Copilot, or any coding agent, plus a **growing benchmark catalog** of the web's most well-designed production sites.
+## What it does
 
 ```
-URL  →  Live measurement  →  Structured specification  →  AI-ready context
+URL  →  Live browser measurement  →  Structured tokens  →  DESIGN.md  →  Your AI agent
 ```
 
-→ **[Try the live demo at designmd.adityaraj.info](https://designmd.adityaraj.info)**
+DesignMD opens the URL in a headless browser, measures the real visual system — colors from computed styles, typography from the cascade, breakpoints from live `@media` rules, hover/focus states from the CSSOM — and synthesizes a portable specification.
+
+The output is the kind of file a senior engineer would actually use to rebuild the brand. Drop it into Cursor, Claude Code, Windsurf, Aider, Copilot, or paste it into any LLM chat. The model gets ground truth instead of guesses.
 
 <br />
 
 ---
 
-## Preview
+## Terminal usage
 
-A measured gallery of curated reference sites — every signal sourced live from production.
+```bash
+dmd <url>                  # stream DESIGN.md to stdout
+dmd <url> --out=PATH       # write to a file
+dmd <url> --json           # extract tokens only (no LLM call — instant, no quota)
+dmd <url> --force          # bypass cache, re-extract from live page
+dmd <url> --quiet          # suppress progress messages on stderr
+dmd --help
+dmd --version
+```
 
-<table width="100%">
-<tr>
-<td width="50%" align="center" valign="top">
-  <a href="https://designmd.adityaraj.info"><img src="./screenshots/homepage.jpg" alt="DesignMD homepage" width="100%" /></a>
-  <br /><sub><b>Homepage</b> · paste any URL, receive a <code>DESIGN.md</code> in ~12 seconds.</sub>
-</td>
-<td width="50%" align="center" valign="top">
-  <a href="https://designmd.adityaraj.info/benchmarks"><img src="./screenshots/benchmarks.jpg" alt="Benchmark catalog" width="100%" /></a>
-  <br /><sub><b>Benchmark catalog</b> · 56 measured sites across 13 curated categories.</sub>
-</td>
-</tr>
-</table>
+### Common patterns
+
+```bash
+# Pipe into a project file
+dmd stripe.com > ./design/stripe.md
+
+# Send to clipboard
+dmd https://linear.app | pbcopy
+
+# Token-only extraction (machine-readable, free, instant)
+dmd vercel.com --json | jq '.colors'
+
+# Self-hosting / regional endpoint
+DESIGNMD_API=https://my-designmd.internal dmd notion.so
+```
+
+`stdout` always carries the markdown (or JSON). Progress lines go to `stderr`, so pipes stay clean.
 
 <br />
 
-**Selected benchmark thumbnails** — each card links to a full `DESIGN.md` example.
+---
+
+## AI workflow integration
+
+The generated `DESIGN.md` is purpose-built for LLM context windows. Drop it in once; reference it from your agent's rules file.
+
+### Claude Code
+
+Add to your project's `CLAUDE.md`:
+
+```markdown
+When building any UI in this project, read @DESIGN.md before generating code.
+Use the colors, typography, and spacing from that file exactly — do not invent
+brand values.
+```
+
+### Cursor
+
+Add to `.cursor/rules` (or `.cursorrules`):
+
+```
+Read DESIGN.md before writing UI code. Use its color palette, type scale,
+and spacing values exactly. Every brand value should trace back to the file.
+```
+
+### Windsurf · Aider · Cline · Continue
+
+Same pattern — every modern coding agent supports a project-root rules file. Reference `DESIGN.md` from it.
+
+Full integration guide: [`docs/using-with-ai-tools.md`](./docs/using-with-ai-tools.md).
+
+<br />
+
+---
+
+## Sample output
+
+A snippet from [`examples/DESIGN-stripe.md`](./examples/DESIGN-stripe.md):
+
+```markdown
+## Color Palette & Roles
+
+### Primary
+- **Brand Indigo (#0a2540)** — Hero typography, primary footer surface
+- **Stripe Purple (#635bff)** — Primary buttons, focus rings, link accents
+
+### Surface
+- **Pure White (#ffffff)** — Page background, card surface
+- **Cool Mist (#f6f9fc)** — Secondary surface, alternating sections
+
+### Typography
+| Role    | Font      | Size | Weight | Line Height |
+|---------|-----------|------|--------|-------------|
+| Display | Sohne Var | 64px | 600    | 1.05        |
+| H1      | Sohne Var | 40px | 600    | 1.15        |
+| Body    | Sohne Var | 18px | 400    | 1.6         |
+| Code    | Sohne Mono| 14px | 400    | 1.5         |
+
+### Breakpoints (measured live)
+- 480px · 600px · 768px · 880px · 1024px · 1200px · 1440px
+```
+
+Full file: [DESIGN-stripe.md](./examples/DESIGN-stripe.md) · [Live page](https://designmd.cc/benchmarks/stripe)
+
+<br />
+
+---
+
+## More examples
+
+Eight production sites, each measured live. Click a card for the full `DESIGN.md`.
 
 <table width="100%">
 <tr>
@@ -75,106 +175,47 @@ A measured gallery of curated reference sites — every signal sourced live from
 </tr>
 </table>
 
-<br />
-
----
-
-## Key Features
-
-| | |
-|---|---|
-| 🎨 **Color & design token analysis** | Full palette extraction with semantic roles — surface, foreground, accent, inverse — plus measured WCAG-compliant contrast pairs. |
-| ✍️ **Typography system mapping** | Type families, weight ranges, size ramps, and line-height systems captured from the rendered page. |
-| 📐 **Spacing & layout signals** | Measured spacing scale, breakpoint enumeration, z-index ladder, and stacking-context inventory. |
-| ⚡ **Motion & interaction states** | Hover, focus, and active states surfaced live — including transition timing and easing curves. |
-| 📚 **Curated benchmark catalog** | 56 reference sites across 13 categories — AI, developer tools, fintech, design, productivity, and more. |
-| 🧠 **AI-ready DESIGN.md exports** | Portable specs drop straight into Claude, Cursor, Copilot, Windsurf, Aider, or plain LLM context windows. |
+A larger reference catalog — 56 measured sites across 13 categories — is live at [**designmd.cc/benchmarks**](https://designmd.cc/benchmarks).
 
 <br />
 
 ---
 
-## How It Works
-
-```
-URL  →  Browser instrumentation  →  Signal capture  →  Specification synthesis  →  AI-ready export
-```
-
-DesignMD runs each analysis against a real production page inside a controlled measurement environment. At a high level:
-
-1. **Live browser instrumentation** — every signal is captured against the fully rendered page, not inferred from static source or screenshots.
-2. **Structured signal capture** — color, typography, spacing, layout primitives, interaction states, and breakpoints are extracted in their semantic context.
-3. **Specification synthesis** — the structured measurements are formalized into a portable, human-readable `DESIGN.md` spec.
-4. **AI-ready export** — the final document drops directly into Claude, Cursor, Copilot, or any LLM context window as ground-truth design grounding.
-
-Each analysis is published at stable URLs with structured metadata:
-
-- `/benchmarks/<slug>` — human-readable page (rendered spec + side panel)
-- `/benchmarks/<slug>.json` — machine-readable structured extraction
-- `/benchmarks/<slug>.jpg` — pre-cropped hero thumbnail
-- `/sitemap.xml` — full crawlable index for ingestion pipelines
-
-<br />
-
----
-
-## Sample Output
-
-A snippet from [`examples/DESIGN-stripe.md`](./examples/DESIGN-stripe.md):
-
-```markdown
-## Color Palette & Roles
-
-### Primary
-- **Brand Indigo (#0a2540)** — Hero typography, primary footer surface
-- **Stripe Purple (#635bff)** — Primary buttons, focus rings, link accents
-
-### Surface
-- **Pure White (#ffffff)** — Page background, card surface
-- **Cool Mist (#f6f9fc)** — Secondary surface, alternating sections
-
-### Typography
-| Role | Font | Size | Weight | Line Height |
-|---|---|---|---|---|
-| Display | Sohne Var | 64px | 600 | 1.05 |
-| H1 | Sohne Var | 40px | 600 | 1.15 |
-| Body | Sohne Var | 18px | 400 | 1.6 |
-| Code | Sohne Mono | 14px | 400 | 1.5 |
-
-### Breakpoints (measured live)
-- 480px · 600px · 768px · 880px · 1024px · 1200px · 1440px
-```
-
-Full file: [DESIGN-stripe.md](./examples/DESIGN-stripe.md) · [Live page](https://designmd.adityaraj.info/benchmarks/stripe)
-
-<br />
-
----
-
-## Why This Exists
-
-Every AI coding agent is good at writing code. None of them is good at matching a specific brand's visual system without ground-truth grounding.
+## Why DESIGN.md
 
 | Approach | Failure mode |
 |---|---|
-| **AI guesses from text prompt** | Hallucinates plausible-looking but wrong colors, fonts, and spacing. |
-| **Designer manually documents tokens** | Stale within weeks; doesn't scale across teams. |
-| **Screenshot → vision model** | Loses structural information; treats decorative pixels as design intent. |
-| **Existing design-system catalogs** | Hand-curated, static, biased to designer aesthetics. |
+| Agent guesses from prompt | Hallucinates plausible-looking but wrong colors, fonts, spacing |
+| Designer hand-documents tokens | Stale within weeks; doesn't scale |
+| Screenshot → vision model | Loses structural information; treats decorative pixels as design intent |
+| Static design-system catalog | Hand-curated, biased to designer aesthetics, doesn't match a real brand |
 
-DesignMD measures every signal live, then formalizes it as an `MD` spec that survives the round-trip into an AI context window. The benchmark catalog turns every well-known production site into a reference implementation that compounds in value over time.
+DesignMD measures live, then formalizes the measurement as a markdown spec that survives the round-trip into an LLM context window. The file is portable, diff-able, and re-generable when the source site evolves.
 
 <br />
 
 ---
 
-## Use Cases
+## Exit codes
 
-- **AI-assisted UI development** — give Claude/Cursor a real design spec for any reference brand
-- **Design system audits** — measure your own production site against industry leaders
-- **Competitive analysis** — see exactly how Stripe, Linear, or Notion structure their visual systems
-- **Onboarding new designers** — link to a measured spec instead of writing one from scratch
-- **Research & teaching** — quantitative material for design education
+The CLI uses distinct exit codes so scripts and agents can react correctly:
+
+| Code | Meaning                                        |
+| ---- | ---------------------------------------------- |
+| `0`  | Success                                        |
+| `1`  | User error (bad URL, unsupported flag, refused extraction) |
+| `2`  | Transient — try again (rate limit, server busy, timeout)   |
+| `3`  | Network error                                  |
+
+<br />
+
+---
+
+## Rate limits
+
+Anonymous use: **5 generations per day** per IP-bucket. The `--json` flag does not count against this — it skips the LLM step entirely and returns the raw token extraction.
+
+Per-user API keys with higher quotas arrive when account auth ships. See the [roadmap](./docs/roadmap.md).
 
 <br />
 
@@ -182,41 +223,49 @@ DesignMD measures every signal live, then formalizes it as an `MD` spec that sur
 
 ## Roadmap
 
-See [`docs/roadmap.md`](./docs/roadmap.md) for the full plan. Highlights:
+See [`docs/roadmap.md`](./docs/roadmap.md) for the full plan.
 
-- [x] Initial 56-site benchmark catalog
-- [x] Curated category collections with editorial taglines
+- [x] 56-site benchmark catalog
 - [x] AI-ready `DESIGN.md` exports (markdown + JSON + thumbnail)
-- [ ] 300-site catalog expansion — *in progress*
-- [ ] Comparison pages — `/benchmarks/compare/notion-vs-linear`
+- [x] **CLI client** — `@designmdcc/cli` shipped
+- [ ] **MCP server** — `@designmdcc/mcp` for native Claude Desktop / Cursor / Windsurf tool calls — *next*
+- [ ] 300-site catalog expansion
+- [ ] Comparison pages — `/benchmarks/compare/<a>-vs-<b>`
 - [ ] Structured search API — query benchmarks by palette / font / breakpoint
-- [ ] Token diff over time — track how a site's design evolves
-- [ ] CLI client — `designmd <url>` from the terminal
-- [ ] Anonymous user accounts — saved history, higher quotas
+- [ ] Per-user accounts + higher quotas
+- [ ] Token diff over time
 
 <br />
 
 ---
 
-## Proprietary Boundary
+## Proprietary boundary
 
-This is a **showcase repository**. It contains:
+This repository is the **public developer surface**. It contains:
 
-- ✅ Sample `DESIGN.md` outputs from the live catalog (`/examples`)
-- ✅ High-level architecture and product positioning
-- ✅ UI screenshots (`/screenshots`)
-- ✅ Roadmap, FAQ, and contribution guidance (`/docs`)
+- Sample `DESIGN.md` outputs from the live catalog (`examples/`)
+- High-level architecture and product positioning (`docs/`)
+- UI screenshots (`screenshots/`)
+- The CLI's published documentation (this README)
 
 It does **not** contain:
 
-- ❌ The extraction pipeline
-- ❌ Prompt engineering for the specification stage
-- ❌ Browser automation internals
-- ❌ Server source code
-- ❌ Rate-limiting, caching, or auth internals
-- ❌ Schema definitions or database code
+- The extraction pipeline or browser instrumentation
+- LLM prompts and synthesis logic
+- Server source, rate-limiting, caching, or auth internals
+- Schema definitions or operator tooling
 
-For access to the production codebase or commercial licensing, please reach out — [adityaraj.info](https://adityaraj.info).
+For commercial licensing or production-access inquiries, reach out — [adityaraj.info](https://adityaraj.info).
+
+<br />
+
+---
+
+## Environment
+
+| Variable        | Default                  | Purpose                                    |
+| --------------- | ------------------------ | ------------------------------------------ |
+| `DESIGNMD_API`  | `https://designmd.cc`    | Override the API base URL (self-hosting)   |
 
 <br />
 
@@ -224,14 +273,14 @@ For access to the production codebase or commercial licensing, please reach out 
 
 ## Contributing
 
-This is a curated showcase, not an open-source project. We welcome:
+This is a curated developer surface, not a fully open-source project. We welcome:
 
-- 🪲 **Bug reports** on `designmd.adityaraj.info` (via GitHub Issues here)
-- 💡 **Benchmark suggestions** — open an issue with a URL you want measured
-- ✍️ **Documentation improvements** in `/docs`
-- 🎨 **Better sample examples** — PRs against `/examples` welcome
+- Bug reports on [designmd.cc](https://designmd.cc) — open an issue here
+- Benchmark suggestions — open an issue with a URL you want measured
+- Documentation improvements in `docs/`
+- Better sample examples — PRs against `examples/` welcome
 
-For larger contributions, please open an issue first to discuss.
+For larger changes, open an issue first to discuss. See [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 <br />
 
@@ -239,16 +288,13 @@ For larger contributions, please open an issue first to discuss.
 
 ## License
 
-[MIT](./LICENSE) — covers the **materials in this repository only**: `README`, sample `DESIGN.md` outputs, documentation, screenshots, and example thumbnails.
+[MIT](./LICENSE) — covers the materials in this repository: the CLI source, sample `DESIGN.md` outputs, documentation, screenshots, and example thumbnails.
 
-The MIT license **does not** extend to:
+The MIT license does **not** extend to:
 
 - The DesignMD production source code, automation, or infrastructure
-- The token-extraction pipeline
-- The LLM prompts and generation logic
+- The token-extraction pipeline and prompts
 - The DesignMD name, logo, and brand identity
-
-For licensing the platform itself or commercial deployment, please reach out — [adityaraj.info](https://adityaraj.info).
 
 <br />
 
@@ -256,14 +302,12 @@ For licensing the platform itself or commercial deployment, please reach out —
 
 ## Acknowledgments
 
-Built by [Aditya Raj](https://adityaraj.info). DesignMD is powered by automated browser instrumentation, frontend analysis pipelines, and AI-assisted specification generation.
-
-Thanks to the designers and engineers behind the modern web whose publicly accessible systems make benchmarking and design research possible.
+Built by [Aditya Raj](https://adityaraj.info). Thanks to the designers and engineers behind the modern web whose publicly accessible visual systems make benchmarking and design research possible.
 
 <br />
 
 <div align="center">
 
-**[Try the live demo →](https://designmd.adityaraj.info)**
+**[Try the live demo →](https://designmd.cc)** · **[Install the CLI →](https://www.npmjs.com/package/@designmdcc/cli)**
 
 </div>
