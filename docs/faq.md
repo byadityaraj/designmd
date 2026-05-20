@@ -61,7 +61,7 @@ Do not infer brand styles — measure from the file.
 
 **Plain ChatGPT / others** — paste the file content as a system message or initial context message.
 
-Full integration guide: [`docs/using-with-ai-tools.md`](./using-with-ai-tools.md).
+Full integration guide: [`docs/ai-workflows.md`](./ai-workflows.md).
 
 ## Will sites change over time?
 

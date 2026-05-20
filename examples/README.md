@@ -50,4 +50,4 @@ No human editing has been applied to these examples.
 
 ## How to use them
 
-See [`/docs/using-with-ai-tools.md`](../docs/using-with-ai-tools.md) for instructions on integrating these files with Claude Code, Cursor, Copilot, Windsurf, and other AI coding tools.
+See [`/docs/ai-workflows.md`](../docs/ai-workflows.md) for instructions on integrating these files with Claude Code, Cursor, Copilot, Windsurf, and other AI coding tools.

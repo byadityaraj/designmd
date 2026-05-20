@@ -13,7 +13,7 @@ Extract a real design system from any production URL — colors, typography, spa
 [![Benchmarks](https://img.shields.io/badge/benchmarks-56_sites-2A2620?style=flat-square)](https://designmd.cc/benchmarks)
 [![License](https://img.shields.io/badge/license-MIT-2A2620?style=flat-square)](./LICENSE)
 
-[**Web**](https://designmd.cc) · [**Benchmarks**](https://designmd.cc/benchmarks) · [**CLI on npm**](https://www.npmjs.com/package/@designmdcc/cli) · [**Examples**](./examples) · [**Roadmap**](./docs/roadmap.md)
+[**Web**](https://designmd.cc) · [**Benchmarks**](https://designmd.cc/benchmarks) · [**CLI on npm**](https://www.npmjs.com/package/@designmdcc/cli) · [**Examples**](./examples)
 
 </div>
 
@@ -117,7 +117,7 @@ and spacing values exactly. Every brand value should trace back to the file.
 
 Same pattern — every modern coding agent supports a project-root rules file. Reference `DESIGN.md` from it.
 
-Full integration guide: [`docs/using-with-ai-tools.md`](./docs/using-with-ai-tools.md).
+Full integration guide: [`docs/ai-workflows.md`](./docs/ai-workflows.md).
 
 <br />
 
@@ -215,25 +215,7 @@ The CLI uses distinct exit codes so scripts and agents can react correctly:
 
 Anonymous use: **5 generations per day** per IP-bucket. The `--json` flag does not count against this — it skips the LLM step entirely and returns the raw token extraction.
 
-Per-user API keys with higher quotas arrive when account auth ships. See the [roadmap](./docs/roadmap.md).
-
-<br />
-
----
-
-## Roadmap
-
-See [`docs/roadmap.md`](./docs/roadmap.md) for the full plan.
-
-- [x] 56-site benchmark catalog
-- [x] AI-ready `DESIGN.md` exports (markdown + JSON + thumbnail)
-- [x] **CLI client** — `@designmdcc/cli` shipped
-- [ ] **MCP server** — `@designmdcc/mcp` for native Claude Desktop / Cursor / Windsurf tool calls — *next*
-- [ ] 300-site catalog expansion
-- [ ] Comparison pages — `/benchmarks/compare/<a>-vs-<b>`
-- [ ] Structured search API — query benchmarks by palette / font / breakpoint
-- [ ] Per-user accounts + higher quotas
-- [ ] Token diff over time
+Per-user API keys with higher quotas will arrive alongside account auth.
 
 <br />
 
@@ -244,7 +226,7 @@ See [`docs/roadmap.md`](./docs/roadmap.md) for the full plan.
 This repository is the **public developer surface**. It contains:
 
 - Sample `DESIGN.md` outputs from the live catalog (`examples/`)
-- High-level architecture and product positioning (`docs/`)
+- FAQ and AI-coding-agent integration guide (`docs/`)
 - UI screenshots (`screenshots/`)
 - The CLI's published documentation (this README)
 
