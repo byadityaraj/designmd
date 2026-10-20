@@ -13,10 +13,20 @@ Eight curated samples from the live DesignMD catalog, showing the kind of struct
 | [`DESIGN-figma.md`](./DESIGN-figma.md)       | Design       | [/benchmarks/figma](https://designmd.cc/benchmarks/figma)         |
 | [`DESIGN-airbnb.md`](./DESIGN-airbnb.md)     | Consumer     | [/benchmarks/airbnb](https://designmd.cc/benchmarks/airbnb)       |
 
+### Agent-ready `SKILL.md`
+
+The same measurement, rewritten as instructions an AI coding agent follows (token rules, per-component state matrices, WCAG 2.2 AA gates, testable quality gates):
+
+| Sample                                   | Source     |
+| ---------------------------------------- | ---------- |
+| [`SKILL-stripe.md`](./SKILL-stripe.md)   | stripe.com |
+
 ## Generate your own
 
 ```bash
-npx @designmdcc/cli <your-url> > DESIGN.md
+npx @designmdcc/cli <your-url> > DESIGN.md          # human-readable spec
+npx @designmdcc/cli <your-url> --skill > SKILL.md   # agent-ready skill
+npx @designmdcc/cli <your-url> --both               # both, into ./designmd/
 ```
 
 Same pipeline as the examples in this folder — measured live against the source page, no human editing.
