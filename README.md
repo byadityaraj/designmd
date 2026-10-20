@@ -6,14 +6,14 @@
 
 ### Production-grade design context for AI coding workflows.
 
-Extract a real design system from any production URL — colors, typography, spacing, breakpoints, motion, interaction states — and stream it as a portable `DESIGN.md` your coding agent can actually read.
+Extract a real design system from any production URL — colors, typography, spacing, breakpoints, motion, interaction states — as a portable `DESIGN.md` (human-readable) or an agent-ready `SKILL.md`. Use it from the **web**, a **CLI**, or an **MCP server** your coding agent calls directly.
 
-[![npm](https://img.shields.io/npm/v/@designmdcc/cli?style=flat-square&color=2A2620&label=%40designmdcc%2Fcli)](https://www.npmjs.com/package/@designmdcc/cli)
+[![CLI](https://img.shields.io/npm/v/@designmdcc/cli?style=flat-square&color=2A2620&label=%40designmdcc%2Fcli)](https://www.npmjs.com/package/@designmdcc/cli)
+[![MCP](https://img.shields.io/npm/v/@designmdcc/mcp?style=flat-square&color=2A2620&label=%40designmdcc%2Fmcp)](https://www.npmjs.com/package/@designmdcc/mcp)
 [![Demo](https://img.shields.io/badge/demo-designmd.cc-D14E2F?style=flat-square)](https://designmd.cc)
-[![Benchmarks](https://img.shields.io/badge/benchmarks-56_sites-2A2620?style=flat-square)](https://designmd.cc/benchmarks)
 [![License](https://img.shields.io/badge/license-MIT-2A2620?style=flat-square)](./LICENSE)
 
-[**Web**](https://designmd.cc) · [**Benchmarks**](https://designmd.cc/benchmarks) · [**CLI on npm**](https://www.npmjs.com/package/@designmdcc/cli) · [**Examples**](./examples)
+[**Web**](https://designmd.cc) · [**SKILL.md**](https://designmd.cc/skill) · [**CLI**](https://designmd.cc/cli) · [**MCP**](https://designmd.cc/mcp) · [**Benchmarks**](https://designmd.cc/benchmarks) · [**Examples**](./examples)
 
 </div>
 
@@ -24,10 +24,12 @@ Extract a real design system from any production URL — colors, typography, spa
 ## Quick start
 
 ```bash
-npx @designmdcc/cli stripe.com > DESIGN.md
+npx @designmdcc/cli stripe.com > DESIGN.md          # human-readable spec
+npx @designmdcc/cli stripe.com --skill > SKILL.md   # agent-ready skill
+npx @designmdcc/cli stripe.com --both               # both, into ./designmd/
 ```
 
-That's the whole flow. No account, no config, no API key. The command streams a measured `DESIGN.md` spec for `stripe.com` to stdout; redirect it into a file and hand it to your AI coding agent.
+That's the whole flow. No account, no config, no API key. The command streams a measured spec for `stripe.com` to stdout; redirect it into a file and hand it to your AI coding agent. `>` names the output file — add `--skill` to generate a `SKILL.md` instead, or `--both` to get both from a single analysis.
 
 For repeat use, install globally:
 
@@ -36,7 +38,7 @@ npm install -g @designmdcc/cli
 dmd stripe.com > DESIGN.md
 ```
 
-Requires **Node 18+**.
+Requires **Node 18+**. Prefer it inside your agent? There's an [**MCP server**](#mcp-server) too.
 
 <br />
 
@@ -56,10 +58,31 @@ The output is the kind of file a senior engineer would actually use to rebuild t
 
 ---
 
+## DESIGN.md vs SKILL.md
+
+Two outputs from the same measurement, for two readers:
+
+| | `DESIGN.md` | `SKILL.md` |
+|---|---|---|
+| **Reader** | a human — designer / engineer | an **AI agent** (Claude Code, Cursor, Codex) |
+| **Voice** | narrative — the visual system, explained | rules — `MUST` / `SHOULD`, token-anchored |
+| **Shape** | prose + token tables | component **state matrices**, WCAG 2.2 AA gates, Do / Don't, testable quality gates |
+| **Use** | read it, understand the brand | drop it in; the agent **follows** it when building UI |
+
+`SKILL.md` is the agent-facing companion — the same measured tokens rewritten as instructions an AI coding agent obeys. Generate it with `--skill` (CLI), the [MCP server](#mcp-server), or on the web at [designmd.cc/skill](https://designmd.cc/skill).
+
+Full example: [`examples/SKILL-stripe.md`](./examples/SKILL-stripe.md).
+
+<br />
+
+---
+
 ## Terminal usage
 
 ```bash
 dmd <url>                  # stream DESIGN.md to stdout
+dmd <url> --skill          # generate SKILL.md (agent-ready) instead of DESIGN.md
+dmd <url> --both           # write DESIGN.md + SKILL.md into ./designmd/
 dmd <url> --out=PATH       # write to a file
 dmd <url> --json           # extract tokens only (no LLM call — instant, no quota)
 dmd <url> --force          # bypass cache, re-extract from live page
@@ -118,6 +141,40 @@ and spacing values exactly. Every brand value should trace back to the file.
 Same pattern — every modern coding agent supports a project-root rules file. Reference `DESIGN.md` from it.
 
 Full integration guide: [`docs/ai-workflows.md`](./docs/ai-workflows.md).
+
+<br />
+
+---
+
+## MCP server
+
+Connect DesignMD to Claude Code, Cursor, or any MCP client and pull a design system **inline** — while the agent builds.
+
+**Claude Code:**
+
+```bash
+claude mcp add designmd -- npx -y @designmdcc/mcp
+```
+
+**Cursor · Windsurf · Claude Desktop** — add to your `mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "designmd": {
+      "command": "npx",
+      "args": ["-y", "@designmdcc/mcp"]
+    }
+  }
+}
+```
+
+Two tools:
+
+- **`designmd_extract(url, format)`** — `design` / `skill` / `both`, as markdown.
+- **`designmd_tokens(url)`** — raw measured tokens as JSON (no LLM — fast and free).
+
+Then just ask: *"Extract stripe.com's design system as a SKILL.md and build a pricing page that follows it."* More at [designmd.cc/mcp](https://designmd.cc/mcp).
 
 <br />
 
